@@ -5,136 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panini 2026 - Master 638</title>
     <style>
-        :root {
-            --afa-cyan: #22b5d4;    /* Cian oficial de las figus */
-            --afa-blue: #003087;    /* Azul para los nombres y headers */
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #ffffff; /* Fondo blanco pedido */
-            color: #1e293b; 
-            margin: 0;
-            padding-bottom: 100px;
-        }
-
-        .header {
-            background: var(--afa-cyan);
-            padding: 20px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border-bottom: 4px solid var(--afa-blue);
-        }
-
-        .header h1 {
-            color: var(--afa-blue);
-            margin: 0;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        .progress-box {
-            color: var(--afa-blue);
-            font-weight: bold;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-
-        .group-title {
-            background: var(--afa-blue);
-            padding: 12px 20px;
-            font-weight: bold;
-            color: var(--afa-cyan);
-            border-left: 6px solid #ffffff;
-            margin-top: 25px;
-            text-transform: uppercase;
-        }
-
-        .country-card {
-            margin: 15px;
-            background: #f8fafc;
-            border-radius: 15px;
-            border: 2px solid var(--afa-cyan);
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .country-header {
-            padding: 12px 18px;
-            font-weight: 800;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--afa-cyan);
-            color: var(--afa-blue);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-            gap: 12px;
-            padding: 15px;
-        }
-
-        .figu { 
-            background: #ff4d4d; 
-            aspect-ratio: 2/3;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid #b30000; 
-            transition: 0.2s ease;
-        }
-
+        :root { --afa-cyan: #22b5d4; --afa-blue: #003087; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #ffffff; color: #1e293b; margin: 0; padding-bottom: 100px; }
+        .header { background: var(--afa-cyan); padding: 20px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-bottom: 4px solid var(--afa-blue); }
+        .header h1 { color: var(--afa-blue); margin: 0; font-weight: 900; text-transform: uppercase; font-size: 1.5em; }
+        .progress-box { color: var(--afa-blue); font-weight: bold; font-size: 0.9em; margin-top: 10px; }
+        #busqueda { width: 85%; padding: 12px; margin-top: 15px; border-radius: 25px; border: 2px solid var(--afa-blue); font-size: 1em; outline: none; }
+        .group-title { background: var(--afa-blue); padding: 12px 20px; font-weight: bold; color: var(--afa-cyan); border-left: 6px solid #ffffff; margin-top: 25px; text-transform: uppercase; }
+        .country-card { margin: 15px; background: #f8fafc; border-radius: 15px; border: 2px solid var(--afa-cyan); overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .country-header { padding: 12px 18px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; background: var(--afa-cyan); color: var(--afa-blue); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 12px; padding: 15px; }
+        .figu { background: #ff4d4d; aspect-ratio: 2/3; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #b30000; transition: 0.2s ease; }
         .figu .num { color: white; font-weight: 900; font-size: 1.4em; }
         .figu .name { color: rgba(255,255,255,0.9); font-weight: 700; font-size: 0.65em; text-transform: uppercase; margin-top: 5px; text-align: center; padding: 0 4px; }
-
-        .owned {
-            background: #2ecc71 !important; 
-            border-color: #27ae60 !important;
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
-        }
-
+        .owned { background: #2ecc71 !important; border-color: #27ae60 !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.4); }
         .owned .num, .owned .name { color: white !important; }
-
-        /* Estilo del buscador */
-        #busqueda {
-            width: 85%;
-            padding: 12px;
-            margin-top: 15px;
-            border-radius: 25px;
-            border: 2px solid var(--afa-blue);
-            font-size: 1em;
-            outline: none;
-        }
     </style>
 </head>
 <body>
-
 <div class="header">
     <h1>PANINI 2026 - WORLD COLLECTION</h1>
-    <div class="progress-box">
-        <div>ESTADO DE LA COLECCIÓN</div>
-        <div style="font-size: 1.4em;">
-            <span id="c-count">0</span> / 638 FIGURITAS (<span id="c-percent">0</span>%)
-        </div>
-    </div>
-    <input type="text" id="busqueda" placeholder="Buscar país o grupo...">
+    <div class="progress-box"><span id="c-count">0</span> / 638 FIGURITAS (<span id="c-percent">0</span>%)</div>
+    <input type="text" id="busqueda" placeholder="Buscar país...">
 </div>
-
 <div id="album-render"></div>
-
 <script>
     const totalGoal = 638;
-    
+    // Aquí puedes ir agregando más equipos siguiendo este formato
     const albumCompleto2026 = [
-    { group: "GRUPO A", teams: [
+       { group: "GRUPO A", teams: [
         { name: "México", code: "MEX", color: "#006341", text: "white", players: ["Escudo", "Malagon","Vazquez","Sanchez","Montes","Gallardo","REYES","LAINEZ","RODRIGUEZ","ALVAREZ","PINEDA","RUIZ","E.SANCHEZ","LOZANO","GIMENEZ","JIMENEZ","VEGA","ALVARADO","HAJERTA"] },
         { name: "Sudáfrica", code: "RSA", color: "#007A4D", text: "white", players: ["Escudo", "Williams", "Modiba", "Mvala", "Mudau", "Ngezana", "Mokoena", "Sithole", "Zwane", "Tau", "Makgopa", "Morena", "Lepasa"] },
         { name: "Corea del Sur", code: "KOR", color: "#CC163F", text: "white", players: ["Escudo", "Jo", "Kim", "Cho", "Seol", "Lee", "Hwang", "Lee", "Son", "Hwang", "Oh", "Bae", "Paik"] },
@@ -198,7 +97,7 @@
         { name: "Portugal", code: "POR", color: "#E42518", text: "white", players: ["Escudo", "Costa", "Dias", "Inácio", "Cancelo", "Mendes", "Palhinha", "Vitinha", "Fernandes", "Silva", "Leão", "Ronaldo", "Félix", "Jota", "Ramos"] },
         { name: "RD Congo", code: "COD", color: "#007FFF", text: "white", players: ["Escudo", "Mpasi", "Mbemba", "Inonga", "Masuaku", "Kalulu", "Moutoussamy", "Pickel", "Kakuta", "Wissa", "Bakambu", "Banza", "Bongonda"] },
         { name: "Uzbekistán", code: "UZB", color: "#0099B5", text: "white", players: ["Escudo", "Yusupov", "Eshmurodov", "Aliqulov", "Khusanov", "Shukurov", "Hamrobekov", "Masharipov", "Shomurodov", "Urunov", "Turgunboev", "Fayzullaev"] },
-        { name: "Colombia", code: "COL", color: "#FCD116", text: "black", players: ["Escudo", "Vargas", "Lucumí", "Cuesta", "Sánchez", "Muñoz", "Mojica", "Ríos", "Lerma", "James", "Díaz", "Córdoba", "Durán", "Borré", "Quintero", "Asprilla"] }
+        { name: "Colombia", code: "COL", color: "#FCD116", text: "black", players: ["Escudo", "DÍAZ", "CÓRDOBA", "CARRASCAL", "RÍOS", "CASTAÑO", "OSPINA", "ARIAS", "QUINTERO", "VARGAS", "SUÁREZ", "RODRÍGUEZ", "LERMA", "ARIAS", "MUÑOZ", "MINA", "MOJICA", "SÁNCHEZ", "LUCUMÍ"] }
     ]},
     { group: "GRUPO L", teams: [
         { name: "Inglaterra", code: "ENG", color: "#FFFFFF", text: "black", players: ["Escudo", "Pickford", "Stones", "Guéhi", "Walker", "Rice", "Bellingham", "Mainoo", "Saka", "Foden", "Palmer", "Kane", "Watkins", "Rice"] },
@@ -207,6 +106,7 @@
         { name: "Panamá", code: "PAN", color: "#DA121A", text: "white", players: ["Escudo", "Mosquera", "Córdoba", "Fariña", "Murillo", "Davis", "Godoy", "Carrasquilla", "Rodríguez", "Díaz", "Fajardo", "Blackman", "Escobar"] }
     ]}
 ];
+
 
     let myFigus = JSON.parse(localStorage.getItem('panini_final_638')) || [];
     const mainBox = document.getElementById('album-render');
@@ -219,85 +119,46 @@
 
     albumCompleto2026.forEach(sect => {
         const title = document.createElement('div');
-        title.className = 'group-title';
-        title.innerText = sect.group;
+        title.className = 'group-title'; title.innerText = sect.group;
         mainBox.appendChild(title);
-
         sect.teams.forEach(team => {
             const card = document.createElement('div');
             card.className = 'country-card';
-            
             const h = document.createElement('div');
-            h.className = 'country-header';
-            h.style.backgroundColor = team.color;
-            h.style.color = team.text;
+            h.className = 'country-header'; h.style.backgroundColor = team.color; h.style.color = team.text;
             h.innerHTML = `<span>${team.name}</span> <small>${team.code}</small>`;
-            
-            const g = document.createElement('div');
-            g.className = 'grid';
-
+            const g = document.createElement('div'); g.className = 'grid';
             team.players.forEach((pName, i) => {
                 const id = `${team.code}-${i}`;
-                const f = document.createElement('div');
-                f.className = 'figu';
-                
-                let numLabel = i;
-                let cleanName = pName;
-                if(team.code === 'FWC') {
-                    const match = pName.match(/\((\d+)\)/);
-                    numLabel = match ? match[1] : i;
-                    cleanName = pName.split(' (')[0];
-                }
-
-                f.innerHTML = `<div class="num">${numLabel}</div><div class="name">${cleanName}</div>`;
-
-                if (myFigus.includes(id)) {
-                    f.classList.add('owned');
-                    f.style.backgroundColor = "#2ecc71"; 
-                }
-
+                const f = document.createElement('div'); f.className = 'figu';
+                if (myFigus.includes(id)) f.classList.add('owned');
+                f.innerHTML = `<div class="num">${i}</div><div class="name">${pName}</div>`;
                 f.onclick = () => {
                     if (myFigus.includes(id)) {
                         myFigus = myFigus.filter(x => x !== id);
                         f.classList.remove('owned');
-                        f.style.backgroundColor = "#ff4d4d"; 
                     } else {
                         myFigus.push(id);
                         f.classList.add('owned');
-                        f.style.backgroundColor = "#2ecc71"; 
-                        alert("¡Felicitaciones! 🎉\nAcabas de conseguir a: " + cleanName);
                     }
                     refresh();
                 };
                 g.appendChild(f);
             });
-            card.appendChild(h);
-            card.appendChild(g);
-            mainBox.appendChild(card);
+            card.appendChild(h); card.appendChild(g); mainBox.appendChild(card);
         });
     });
 
-    // Lógica del buscador conectada
     document.getElementById('busqueda').addEventListener('input', (e) => {
         const termino = e.target.value.toLowerCase();
-        const tarjetas = document.querySelectorAll('.country-card');
-        const titulos = document.querySelectorAll('.group-title');
-
-        tarjetas.forEach((tarjeta) => {
-            const nombrePais = tarjeta.querySelector('.country-header span').innerText.toLowerCase();
-            if (nombrePais.includes(termino)) {
-                tarjeta.style.display = 'block';
-            } else {
-                tarjeta.style.display = 'none';
-            }
+        document.querySelectorAll('.country-card').forEach(c => {
+            const name = c.querySelector('span').innerText.toLowerCase();
+            c.style.display = name.includes(termino) ? 'block' : 'none';
         });
-
-        // Ocultar títulos si estamos buscando para no molestar
-        titulos.forEach(t => {
-            t.style.display = termino === "" ? "block" : "none";
+        document.querySelectorAll('.group-title').forEach(t => {
+            t.style.display = termino === "" ? 'block' : 'none';
         });
     });
-
     refresh();
 </script>
 </body>
