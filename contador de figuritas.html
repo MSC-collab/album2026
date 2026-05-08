@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panini 2026 - Master 638</title>
+    <style>
+        :root {
+            --afa-cyan: #22b5d4;    /* Cian oficial de las figus */
+            --afa-blue: #003087;    /* Azul para los nombres y headers */
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #ffffff; /* Fondo blanco pedido */
+            color: #1e293b; 
+            margin: 0;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            background: var(--afa-cyan);
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-bottom: 4px solid var(--afa-blue);
+        }
+
+        .header h1 {
+            color: var(--afa-blue);
+            margin: 0;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .progress-box {
+            color: var(--afa-blue);
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .group-title {
+            background: var(--afa-blue);
+            padding: 12px 20px;
+            font-weight: bold;
+            color: var(--afa-cyan);
+            border-left: 6px solid #ffffff;
+            margin-top: 25px;
+            text-transform: uppercase;
+        }
+
+        .country-card {
+            margin: 15px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 2px solid var(--afa-cyan);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .country-header {
+            padding: 12px 18px;
+            font-weight: 800;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--afa-cyan);
+            color: var(--afa-blue);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+            gap: 12px;
+            padding: 15px;
+        }
+
+        .figu { 
+            background: #ff4d4d; 
+            aspect-ratio: 2/3;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid #b30000; 
+            transition: 0.2s ease;
+        }
+
+        .figu .num { color: white; font-weight: 900; font-size: 1.4em; }
+        .figu .name { color: rgba(255,255,255,0.9); font-weight: 700; font-size: 0.65em; text-transform: uppercase; margin-top: 5px; text-align: center; padding: 0 4px; }
+
+        .owned {
+            background: #2ecc71 !important; 
+            border-color: #27ae60 !important;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .owned .num, .owned .name { color: white !important; }
+
+        /* Estilo del buscador */
+        #busqueda {
+            width: 85%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 25px;
+            border: 2px solid var(--afa-blue);
+            font-size: 1em;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>PANINI 2026 - WORLD COLLECTION</h1>
+    <div class="progress-box">
+        <div>ESTADO DE LA COLECCIÓN</div>
+        <div style="font-size: 1.4em;">
+            <span id="c-count">0</span> / 638 FIGURITAS (<span id="c-percent">0</span>%)
+        </div>
+    </div>
+    <input type="text" id="busqueda" placeholder="Buscar país o grupo...">
+</div>
+
+<div id="album-render"></div>
+
+<script>
+    const totalGoal = 638;
+    
+    const albumCompleto2026 = [
+    { group: "GRUPO A", teams: [
+        { name: "México", code: "MEX", color: "#006341", text: "white", players: ["Escudo", "Malagon","Vazquez","Sanchez","Montes","Gallardo","REYES","LAINEZ","RODRIGUEZ","ALVAREZ","PINEDA","RUIZ","E.SANCHEZ","LOZANO","GIMENEZ","JIMENEZ","VEGA","ALVARADO","HAJERTA"] },
+        { name: "Sudáfrica", code: "RSA", color: "#007A4D", text: "white", players: ["Escudo", "Williams", "Modiba", "Mvala", "Mudau", "Ngezana", "Mokoena", "Sithole", "Zwane", "Tau", "Makgopa", "Morena", "Lepasa"] },
+        { name: "Corea del Sur", code: "KOR", color: "#CC163F", text: "white", players: ["Escudo", "Jo", "Kim", "Cho", "Seol", "Lee", "Hwang", "Lee", "Son", "Hwang", "Oh", "Bae", "Paik"] },
+        { name: "Rep. Checa", code: "CZE", color: "#11457E", text: "white", players: ["Escudo", "Kovář", "Krejčí", "Coufal", "Zelený", "Provod", "Červ", "Souček", "Šulc", "Černý", "Hlozek", "Schick", "Staněk"] }
+    ]},
+    { group: "GRUPO B", teams: [
+        { name: "Canadá", code: "CAN", color: "#FF0000", text: "white", players: ["Escudo", "Crépeau", "Davies", "Johnston", "Cornelius", "Bombito", "Eustáquio", "Koné", "Shaffelburg", "David", "Larin", "Buchanan", "Laryea"] },
+        { name: "Bosnia-Herz.", code: "BIH", color: "#002395", text: "white", players: ["Escudo", "Vasilj", "Dedić", "Kolašinac", "Katić", "Tahirović", "Šunjić", "Demirović", "Bajraktarević", "Džeko", "Memić", "Hadžiahmetović"] },
+        { name: "Catar", code: "QAT", color: "#8A1538", text: "white", players: ["Escudo", "Barsham", "Mendes", "Khoukhi", "Al-Rawi", "Gaber", "Waad", "Afif", "Ali", "Abdurisag", "Al-Haydos", "Salman"] },
+        { name: "Suiza", code: "SUI", color: "#D52B1E", text: "white", players: ["Escudo", "Sommer", "Akanji", "Elvedi", "Rodríguez", "Xhaka", "Freuler", "Zakaria", "Shaqiri", "Vargas", "Embolo", "Okafor", "Kobel"] }
+    ]},
+    { group: "GRUPO C", teams: [
+        { name: "Brasil", code: "BRA", color: "#FFDF00", text: "black", players: ["Escudo", "BECKER", "BENTO", "MILITÃO", "MAGALHÃES", "MARQUINHOS", "WESLEY", "DANILO", "GUIMARÃES", "PAQUETÁ", "CASEMIRO", "HENRIQUE", "MARTINELLI", "RAPHINHA", "ESTĚVÃO", "JÚNIOR", "CUNHA", "RODRYGO", "PEDRO"] },
+        { name: "Marruecos", code: "MAR", color: "#C1272D", text: "white", players: ["Escudo", "Bounou", "Hakimi", "Aguerd", "Saïss", "Mazraoui", "Amrabat", "Ounahi", "Díaz", "Ziyech", "Rahimi", "En-Nesyri", "Adli"] },
+        { name: "Haití", code: "HAI", color: "#D21034", text: "white", players: ["Escudo", "Placide", "Adé", "Duverne", "Arcus", "Nazon", "Pierrot", "Picault", "Jacques", "Etienne", "Metusala", "Saba"] },
+        { name: "Escocia", code: "SCO", color: "#000040", text: "white", players: ["Escudo", "Gunn", "Robertson", "McGinn", "McTominay", "Gilmour", "Adams", "Hanley", "Tierney", "McGregor", "Shankland", "Ralston"] }
+    ]},
+    { group: "GRUPO D", teams: [
+        { name: "Estados Unidos", code: "USA", color: "#002868", text: "white", players: ["Escudo", "Turner", "Richards", "Ream", "Robinson", "Scally", "Adams", "McKennie", "Musah", "Reyna", "Pulisic", "Weah", "Balogun", "Pepi"] },
+        { name: "Paraguay", code: "PAR", color: "#D52B1E", text: "white", players: ["Escudo", "Fernández", "Gómez", "Alderete", "Alonso", "Almirón", "Enciso", "Sosa", "Cubas", "Villasanti", "Sanabria", "Bobadilla", "Bareiro"] },
+        { name: "Australia", code: "AUS", color: "#00008B", text: "white", players: ["Escudo", "Ryan", "Souttar", "Burgess", "Behich", "Irvine", "Metcalfe", "Goodwin", "Boyle", "Duke", "Irankunda", "Bos", "Borello"] },
+        { name: "Turquía", code: "TUR", color: "#C1272D", text: "white", players: ["Escudo", "Günok", "Demiral", "Bardakcı", "Kadıoğlu", "Güler", "Çalhanoğlu", "Ayhan", "Yıldız", "Yılmaz", "Kökçü", "Yazıcı", "Tosun"] }
+    ]},
+    { group: "GRUPO E", teams: [
+        { name: "Alemania", code: "GER", color: "#000000", text: "white", players: ["Escudo", "ter Stegen", "Rüdiger", "Tah", "Kimmich", "Raum", "Andrich", "Groß", "Musiala", "Wirtz", "Havertz", "Füllkrug", "Sané", "Müller"] },
+        { name: "Curazao", code: "CUW", color: "#002B7F", text: "white", players: ["Escudo", "Room", "Martina", "Gaari", "Floranus", "Bacuna", "Anita", "Bacuna", "Gorré", "Margaritha", "Janga", "Kuwas", "Felinida"] },
+        { name: "Costa de Marfil", code: "CIV", color: "#FF8200", text: "white", players: ["Escudo", "Fofana", "Ndicka", "Diomande", "Singo", "Fofana", "Kessié", "Seri", "Adingra", "Haller", "Pépé", "Boga", "Kossounou"] },
+        { name: "Ecuador", code: "ECU", color: "#FFDD00", text: "black", players: ["Escudo", "Galíndez", "Hincapié", "Pacho", "Torres", "Preciado", "Caicedo", "Franco", "Páez", "Sarmiento", "Valencia", "Rodríguez", "Yeboah"] }
+    ]},
+    { group: "GRUPO F", teams: [
+        { name: "Países Bajos", code: "NED", color: "#F36C21", text: "white", players: ["Escudo", "Verbruggen", "Van Dijk", "Aké", "Dumfries", "Reijnders", "Simons", "Gakpo", "Depay", "Malen", "Frimpong", "Schouten", "de Ligt"] },
+        { name: "Japón", code: "JPN", color: "#00008B", text: "white", players: ["Escudo", "Suzuki", "Itakura", "Tomiyasu", "Endo", "Morita", "Kubo", "Doan", "Mitoma", "Minamino", "Ueda", "Machida", "Sugawara"] },
+        { name: "Suecia", code: "SWE", color: "#FECC00", text: "black", players: ["Escudo", "Olsen", "Lindelöf", "Hien", "Augustinsson", "Isak", "Gyökeres", "Kulusevski", "Elanga", "Svanberg", "Forsberg", "Cajuste", "Starfelt"] },
+        { name: "Túnez", code: "TUN", color: "#E70013", text: "white", players: ["Escudo", "Dahmen", "Talbi", "Meriah", "Maaloul", "Skhiri", "Laïdouni", "Msakni", "Achouri", "Ltaief", "Jaziri", "Rafia", "Abdi"] }
+    ]},
+    { group: "GRUPO G", teams: [
+        { name: "Bélgica", code: "BEL", color: "#E30613", text: "white", players: ["Escudo", "Casteels", "Faes", "Theate", "Castagne", "Onana", "De Bruyne", "Tielemans", "Doku", "Lukaku", "Trossard", "Bakayoko", "Vertonghen"] },
+        { name: "Egipto", code: "EGY", color: "#CE1126", text: "white", players: ["Escudo", "El Shenawy", "Abdelmonem", "Rabia", "Hany", "Fathi", "Attia", "Trezeguet", "Salah", "Mohamed", "Marmoush", "Ashour", "Fathi"] },
+        { name: "Irán", code: "IRN", color: "#239F40", text: "white", players: ["Escudo", "Beiranvand", "Khalilzadeh", "Kanaanizadegan", "Mohammadi", "Ghoddos", "Ezatolahi", "Jahanbakhsh", "Taremi", "Azmoun", "Hajsafi", "Rezaeian"] },
+        { name: "Nueva Zelanda", code: "NZL", color: "#000000", text: "white", players: ["Escudo", "Paulsen", "Cacace", "Bindon", "Pijnaker", "Garbett", "Stamenic", "Singh", "Wood", "Waine", "Barbarouses", "Boxall", "Payne"] }
+    ]},
+    { group: "GRUPO H", teams: [
+        { name: "España", code: "ESP", color: "#C60B1E", text: "white", players: ["Escudo", "Simón", "Laporte", "Le Normand", "Carvajal", "Cucurella", "Rodri", "Ruiz", "Pedri", "Yamal", "Williams", "Morata", "Olmo", "Joselu"] },
+        { name: "Cabo Verde", code: "CPV", color: "#003893", text: "white", players: ["Escudo", "Vozinha", "Costa", "Lopes", "Moreira", "Pina", "Monteiro", "Duarte", "Mendes", "Cabral", "Bebé", "Rodrigues", "Duarte"] },
+        { name: "Arabia Saudita", code: "KSA", color: "#006C35", text: "white", players: ["Escudo", "Al-Owais", "Al-Bulayhi", "Abdulhamid", "Al-Tambakti", "Kanno", "Al-Dawsari", "Al-Buraikan", "Al-Shehri", "Al-Ghannam", "Al-Najei"] },
+        { name: "Uruguay", code: "URU", color: "#0081C6", text: "white", players: ["Escudo", "Rochet", "Araujo", "Giménez", "Olivera", "Nández", "Valverde", "Ugarte", "De La Cruz", "Bentancur", "Núñez", "Suárez", "Pellistri"] }
+    ]},
+    { group: "GRUPO I", teams: [
+        { name: "Francia", code: "FRA", color: "#002395", text: "white", players: ["Escudo", "Maignan", "Saliba", "Upamecano", "Koundé", "Hernández", "Kanté", "Tchouaméni", "Camavinga", "Mbappé", "Griezmann", "Dembélé", "Barcola", "Thuram"] },
+        { name: "Senegal", code: "SEN", color: "#00853F", text: "white", players: ["Escudo", "Mendy", "Koulibaly", "Diallo", "Niakhaté", "Gueye", "Sarr", "Camara", "Mané", "Jackson", "Sarr", "Mendy", "Diallo"] },
+        { name: "Irak", code: "IRQ", color: "#007A3D", text: "white", players: ["Escudo", "Hassan", "Sulaka", "Doski", "Ali", "Al-Ammari", "Rashid", "Resan", "Iqbal", "Bayesh", "Hussein", "Jasim", "Natiq"] },
+        { name: "Noruega", code: "NOR", color: "#BA0C2F", text: "white", players: ["Escudo", "Nyland", "Østigård", "Ajer", "Ryerson", "Ødegaard", "Berge", "Berg", "Bobb", "Haaland", "Sørloth", "Larsen", "Elyounoussi"] }
+    ]},
+    { group: "GRUPO J", teams: [
+        { name: "Argentina", code: "ARG", color: "#74ACDF", text: "black", players: ["escudo","MARTÍNEZ", "MESSI", "GONZÁLEZ", "MASTANTUONO", "SIMEONE", "ALVAREZ", "MARTÍNEZ", "FERNÁNDEZ", "MAC ALLISTER", "PAZ", "PAREDES", "DE PAUL", "PALACIOS", "ROMERO", "BALERDI", "OTAMENDI", "MOLINA", "TAGLIAFICO"] },
+        { name: "Argelia", code: "ALG", color: "#006233", text: "white", players: ["Escudo", "Mandrea", "Aït-Nouri", "Mandi", "Madani", "Bennacer", "Zerrouki", "Aouar", "Mahrez", "Benrahma", "Bounedjah", "Gouiri", "Amoura"] },
+        { name: "Austria", code: "AUT", color: "#ED2939", text: "white", players: ["Escudo", "Pentz", "Alaba", "Sabitzer", "Laimer", "Baumgartner", "Gregoritsch", "Arnautovic", "Posch", "Danso", "Wimmer", "Seiwald", "Grillitsch"] },
+        { name: "Jordania", code: "JOR", color: "#CE1126", text: "white", players: ["Escudo", "Abulaila", "Al-Arab", "Nasib", "Haddad", "Al-Rawabdeh", "Al-Rashdan", "Al-Mardi", "Al-Taamari", "Al-Naimat", "Olwan", "Sadeh"] }
+    ]},
+    { group: "GRUPO K", teams: [
+        { name: "Portugal", code: "POR", color: "#E42518", text: "white", players: ["Escudo", "Costa", "Dias", "Inácio", "Cancelo", "Mendes", "Palhinha", "Vitinha", "Fernandes", "Silva", "Leão", "Ronaldo", "Félix", "Jota", "Ramos"] },
+        { name: "RD Congo", code: "COD", color: "#007FFF", text: "white", players: ["Escudo", "Mpasi", "Mbemba", "Inonga", "Masuaku", "Kalulu", "Moutoussamy", "Pickel", "Kakuta", "Wissa", "Bakambu", "Banza", "Bongonda"] },
+        { name: "Uzbekistán", code: "UZB", color: "#0099B5", text: "white", players: ["Escudo", "Yusupov", "Eshmurodov", "Aliqulov", "Khusanov", "Shukurov", "Hamrobekov", "Masharipov", "Shomurodov", "Urunov", "Turgunboev", "Fayzullaev"] },
+        { name: "Colombia", code: "COL", color: "#FCD116", text: "black", players: ["Escudo", "Vargas", "Lucumí", "Cuesta", "Sánchez", "Muñoz", "Mojica", "Ríos", "Lerma", "James", "Díaz", "Córdoba", "Durán", "Borré", "Quintero", "Asprilla"] }
+    ]},
+    { group: "GRUPO L", teams: [
+        { name: "Inglaterra", code: "ENG", color: "#FFFFFF", text: "black", players: ["Escudo", "Pickford", "Stones", "Guéhi", "Walker", "Rice", "Bellingham", "Mainoo", "Saka", "Foden", "Palmer", "Kane", "Watkins", "Rice"] },
+        { name: "Croacia", code: "CRO", color: "#FF0000", text: "white", players: ["Escudo", "Livakovic", "Gvardiol", "Sutalo", "Stanisic", "Modric", "Kovacic", "Pasalic", "Perisic", "Kramaric", "Budimir", "Majer", "Vlasic"] },
+        { name: "Ghana", code: "GHA", color: "#000000", text: "white", players: ["Escudo", "Ati-Zigi", "Salisu", "Djiku", "Lamptey", "Partey", "Kudus", "Samed", "Ayew", "Semenyo", "Williams", "Paintsil", "Bukari"] },
+        { name: "Panamá", code: "PAN", color: "#DA121A", text: "white", players: ["Escudo", "Mosquera", "Córdoba", "Fariña", "Murillo", "Davis", "Godoy", "Carrasquilla", "Rodríguez", "Díaz", "Fajardo", "Blackman", "Escobar"] }
+    ]}
+];
+
+    let myFigus = JSON.parse(localStorage.getItem('panini_final_638')) || [];
+    const mainBox = document.getElementById('album-render');
+
+    function refresh() {
+        localStorage.setItem('panini_final_638', JSON.stringify(myFigus));
+        document.getElementById('c-count').innerText = myFigus.length;
+        document.getElementById('c-percent').innerText = ((myFigus.length / totalGoal) * 100).toFixed(1);
+    }
+
+    albumCompleto2026.forEach(sect => {
+        const title = document.createElement('div');
+        title.className = 'group-title';
+        title.innerText = sect.group;
+        mainBox.appendChild(title);
+
+        sect.teams.forEach(team => {
+            const card = document.createElement('div');
+            card.className = 'country-card';
+            
+            const h = document.createElement('div');
+            h.className = 'country-header';
+            h.style.backgroundColor = team.color;
+            h.style.color = team.text;
+            h.innerHTML = `<span>${team.name}</span> <small>${team.code}</small>`;
+            
+            const g = document.createElement('div');
+            g.className = 'grid';
+
+            team.players.forEach((pName, i) => {
+                const id = `${team.code}-${i}`;
+                const f = document.createElement('div');
+                f.className = 'figu';
+                
+                let numLabel = i;
+                let cleanName = pName;
+                if(team.code === 'FWC') {
+                    const match = pName.match(/\((\d+)\)/);
+                    numLabel = match ? match[1] : i;
+                    cleanName = pName.split(' (')[0];
+                }
+
+                f.innerHTML = `<div class="num">${numLabel}</div><div class="name">${cleanName}</div>`;
+
+                if (myFigus.includes(id)) {
+                    f.classList.add('owned');
+                    f.style.backgroundColor = "#2ecc71"; 
+                }
+
+                f.onclick = () => {
+                    if (myFigus.includes(id)) {
+                        myFigus = myFigus.filter(x => x !== id);
+                        f.classList.remove('owned');
+                        f.style.backgroundColor = "#ff4d4d"; 
+                    } else {
+                        myFigus.push(id);
+                        f.classList.add('owned');
+                        f.style.backgroundColor = "#2ecc71"; 
+                        alert("¡Felicitaciones! 🎉\nAcabas de conseguir a: " + cleanName);
+                    }
+                    refresh();
+                };
+                g.appendChild(f);
+            });
+            card.appendChild(h);
+            card.appendChild(g);
+            mainBox.appendChild(card);
+        });
+    });
+
+    // Lógica del buscador conectada
+    document.getElementById('busqueda').addEventListener('input', (e) => {
+        const termino = e.target.value.toLowerCase();
+        const tarjetas = document.querySelectorAll('.country-card');
+        const titulos = document.querySelectorAll('.group-title');
+
+        tarjetas.forEach((tarjeta) => {
+            const nombrePais = tarjeta.querySelector('.country-header span').innerText.toLowerCase();
+            if (nombrePais.includes(termino)) {
+                tarjeta.style.display = 'block';
+            } else {
+                tarjeta.style.display = 'none';
+            }
+        });
+
+        // Ocultar títulos si estamos buscando para no molestar
+        titulos.forEach(t => {
+            t.style.display = termino === "" ? "block" : "none";
+        });
+    });
+
+    refresh();
+</script>
+</body>
+</html>
